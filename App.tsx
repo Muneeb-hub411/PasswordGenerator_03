@@ -4,6 +4,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  TextInput,
 } from 'react-native';
 import React, {useState} from 'react';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
@@ -21,6 +22,7 @@ export default function App() {
   const [upercase, setupercase] = useState(true);
   const [lowercase, setlowercase] = useState(true);
   const [specialcharacter, setspecialcharacter] = useState(true);
+  const [passlen, setLen] = useState(6);
   let generatepass = () => {
     let loweralphabets = 'abcdefghijklmnopqrstuvwxyz';
     let upperalphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -35,7 +37,7 @@ export default function App() {
     if (specialcharacter) {
       character += specialcharacters;
     }
-    let newpass = createpass(character, 8);
+    let newpass = createpass(character, passlen);
     setpassword(newpass);
     console.log(newpass);
   };
@@ -74,6 +76,21 @@ export default function App() {
           isChecked={specialcharacter}
           onPress={(isChecked: boolean) => setspecialcharacter(isChecked)}
           text="Special Characters"
+        />
+        <TextInput
+          onChangeText={value => {
+            if (value === '') {
+              setLen(parseInt('')); // allow empty input
+            } else {
+              const number = parseInt(value);
+              if (!isNaN(number)) {
+                setLen(number);
+              }
+            }
+          }}
+          value={passlen.toString()}
+          placeholder="useless placeholder"
+          keyboardType="numeric"
         />
 
         <TouchableOpacity style={styles.button} onPress={generatepass}>
