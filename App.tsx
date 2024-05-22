@@ -54,6 +54,7 @@ export default function App() {
     setlowercase(false);
     setspecialcharacter(false);
     setupercase(false);
+    setLen(0);
   };
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -63,35 +64,41 @@ export default function App() {
         </Text>
 
         <BouncyCheckbox
+          style={styles.checkbox}
           isChecked={upercase}
           onPress={(isChecked: boolean) => setupercase(isChecked)}
           text="Uppercase"
         />
         <BouncyCheckbox
+          style={styles.checkbox}
           isChecked={lowercase}
           onPress={(isChecked: boolean) => setlowercase(isChecked)}
           text="Lowercase"
         />
         <BouncyCheckbox
+          style={styles.checkbox}
           isChecked={specialcharacter}
           onPress={(isChecked: boolean) => setspecialcharacter(isChecked)}
           text="Special Characters"
         />
-        <TextInput
-          onChangeText={value => {
-            if (value === '') {
-              setLen(parseInt('')); // allow empty input
-            } else {
-              const number = parseInt(value);
-              if (!isNaN(number)) {
-                setLen(number);
+        <View style={styles.lenghtContainer}>
+          <Text>Enter the lenght</Text>
+          <TextInput
+            onChangeText={value => {
+              if (value === '') {
+                setLen(0); // Set to a default value (e.g., 0) when input is empty
+              } else {
+                const number = parseInt(value, 10); // Ensure proper base-10 parsing
+                if (!isNaN(number)) {
+                  setLen(number);
+                }
               }
-            }
-          }}
-          value={passlen.toString()}
-          placeholder="useless placeholder"
-          keyboardType="numeric"
-        />
+            }}
+            value={passlen.toString()}
+            placeholder="Enter Length"
+            keyboardType="numeric"
+          />
+        </View>
 
         <TouchableOpacity style={styles.button} onPress={generatepass}>
           <Text style={styles.buttonText}>Generate Password</Text>
@@ -109,6 +116,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'condensedBold',
   },
+
+  lenghtContainer: {
+    flex: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
+  },
+  checkbox: {
+    marginBottom: 5,
+  },
   checkboxContainer: {
     flexDirection: 'row',
     // alignItems: 'center',
@@ -118,6 +136,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 10,
   },
   button: {
     backgroundColor: '#007bff',
